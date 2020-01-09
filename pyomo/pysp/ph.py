@@ -1954,7 +1954,7 @@ class ProgressiveHedging(_PHBase):
         self._max_iterations                      = options.max_iterations
         self._overrelax                           = options.overrelax
         self._nu                                  = options.nu
-        self._async                               = options.async
+        self._async                               = options.async_
         self._async_buffer_length                 = options.async_buffer_length
         self._rho                                 = options.default_rho
         self._rho_setter_file                     = options.rho_cfgfile

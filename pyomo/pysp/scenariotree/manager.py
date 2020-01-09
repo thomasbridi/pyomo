@@ -1056,7 +1056,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
                                           invocation_type=invocation_type,
                                           function_args=function_args,
                                           function_kwds=function_kwds,
-                                          async_=async,
+                                          async_=async_,
                                           oneway=oneway)
 
     def invoke_method(self,
@@ -1110,7 +1110,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
         return self._invoke_method_impl(method_name,
                                         method_args=method_args,
                                         method_kwds=method_kwds,
-                                        async_=async,
+                                        async_=async_,
                                         oneway=oneway)
 
     def push_fix_queue_to_instances(self):
@@ -1493,7 +1493,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
                                                     invocation_type=invocation_type,
                                                     function_args=function_args,
                                                     function_kwds=function_kwds,
-                                                    async_=async,
+                                                    async_=async_,
                                                     oneway=oneway)
 
     def invoke_method_on_worker(self,
@@ -1552,7 +1552,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
                                                   method_name,
                                                   method_args=method_args,
                                                   method_kwds=method_kwds,
-                                                  async_=async,
+                                                  async_=async_,
                                                   oneway=oneway)
 
     @property
