@@ -185,7 +185,7 @@ class _ScenarioTreeManagerTesterBase(object):
 
     @unittest.nottest
     def _run_function_tests(self, manager, async_=False, oneway=False, delay=False):
-        assert not (async and oneway)
+        assert not (async_ and oneway)
         class_name, test_name = self.id().split('.')[-2:]
         print("Running function tests on %s.%s" % (class_name, test_name))
         data = []

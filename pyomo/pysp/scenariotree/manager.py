@@ -716,7 +716,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
             """Wait for the job request to complete and return the result."""
             raise NotImplementedError                  #pragma:nocover
 
-    class AsyncResult(async_):
+    class AsyncResult(Async):
 
         __slots__ = ('_action_manager',
                      '_result',
@@ -779,7 +779,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
 
     # This class ensures that a chain of asynchronous
     # actions are completed in order
-    class AsyncResultChain(async_):
+    class AsyncResultChain(Async):
         __slots__ = ("_results", "_return_index")
 
         def __init__(self, results, return_index=-1):
@@ -799,7 +799,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
 
     # This class returns the result of a callback function
     # when completing an asynchronous action
-    class AsyncResultCallback(async_):
+    class AsyncResultCallback(Async):
         __slots__ = ("_result", "_done")
 
         def __init__(self, result):
@@ -2355,7 +2355,7 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
                               function_kwds=None,
                               async_=False,
                               oneway=False):
-        assert not (async and oneway)
+        assert not (async_ and oneway)
 
         result = self._invoke_function_on_worker_impl(
             self._worker_name,
@@ -2381,7 +2381,7 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
                             method_kwds=None,
                             async_=False,
                             oneway=False):
-        assert not (async and oneway)
+        assert not (async_ and oneway)
 
         result =  self._invoke_method_on_worker_impl(
             self._worker_name,
@@ -2493,7 +2493,7 @@ class _ScenarioTreeManagerClientPyroAdvanced(ScenarioTreeManagerClient,
                                         function_kwds=None,
                                         async_=False,
                                         oneway=False):
-        assert not (async and oneway)
+        assert not (async_ and oneway)
         assert self._action_manager is not None
         assert worker_name in self._pyro_worker_list
         start_time = time.time()
@@ -3388,7 +3388,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
             function_kwds=None,
             async_=False,
             oneway=False):
-        assert not (async and oneway)
+        assert not (async_ and oneway)
         assert self._action_manager is not None
         start_time = time.time()
 
@@ -3631,7 +3631,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
             method_kwds=None,
             async_=False,
             oneway=False):
-        assert not (async and oneway)
+        assert not (async_ and oneway)
         assert self._action_manager is not None
         start_time = time.time()
 
