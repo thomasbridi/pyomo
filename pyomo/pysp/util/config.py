@@ -1169,7 +1169,7 @@ safe_declare_unique_option(
 
 safe_declare_unique_option(
     common_block,
-    "async",
+    "async_",
     PySPConfigValue(
         False,
         domain=bool,
@@ -1187,7 +1187,7 @@ safe_declare_unique_option(
         1,
         domain=_domain_positive_integer,
         description=(
-            "Number of scenarios to collect, if in async mode, before "
+            "Number of scenarios to collect, if in async_ mode, before "
             "doing statistics and weight updates. Default is 1."
         ),
         doc=None,

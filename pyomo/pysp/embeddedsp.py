@@ -837,7 +837,7 @@ class EmbeddedSP(object):
             options,
             factory=factory)
         try:
-            init = manager.initialize(async=True)
+            init = manager.initialize(async_=True)
             pcuids = ComponentMap()
             for param in self.stochastic_data:
                 pcuids[param] = ComponentUID(param)

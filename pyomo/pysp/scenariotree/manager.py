@@ -716,7 +716,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
             """Wait for the job request to complete and return the result."""
             raise NotImplementedError                  #pragma:nocover
 
-    class AsyncResult(Async):
+    class AsyncResult(async_):
 
         __slots__ = ('_action_manager',
                      '_result',
@@ -745,7 +745,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
             """Wait for the job request to complete and return the result."""
             if self._result is not None:
                 if isinstance(self._result,
-                              ScenarioTreeManager.Async):
+                              ScenarioTreeManager.async_):
                     self._result = self._result.complete()
                 return self._result
 
@@ -779,7 +779,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
 
     # This class ensures that a chain of asynchronous
     # actions are completed in order
-    class AsyncResultChain(Async):
+    class AsyncResultChain(async_):
         __slots__ = ("_results", "_return_index")
 
         def __init__(self, results, return_index=-1):
@@ -790,7 +790,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
             """Wait for the job request to complete and return the result."""
             for i in xrange(len(self._results)):
                 assert isinstance(self._results[i],
-                                  ScenarioTreeManager.Async)
+                                  ScenarioTreeManager.async_)
                 self._results[i] = self._results[i].complete()
             result = None
             if self._return_index is not None:
@@ -799,7 +799,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
 
     # This class returns the result of a callback function
     # when completing an asynchronous action
-    class AsyncResultCallback(Async):
+    class AsyncResultCallback(async_):
         __slots__ = ("_result", "_done")
 
         def __init__(self, result):
@@ -966,7 +966,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
                         invocation_type=InvocationType.Single,
                         function_args=(),
                         function_kwds=None,
-                        async=False,
+                        async_=False,
                         oneway=False):
         """Invokes a function on scenario tree constructs
         managed by this scenario tree manager. The first
@@ -1005,7 +1005,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
             function_kwds:
                  Additional keywords to pass to the function
                  when it is invoked.
-            async:
+            async_:
                  When set to True, the return value will be
                  an asynchronous object. Invocation results
                  can be obtained at any point by calling the
@@ -1039,7 +1039,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
         if not self.initialized:
             raise RuntimeError(
                 "The scenario tree manager is not initialized.")
-        if async and oneway:
+        if async_ and oneway:
             raise ValueError("async oneway calls do not make sense")
         invocation_type = _map_deprecated_invocation_type(invocation_type)
         if (invocation_type == InvocationType.PerBundle) or \
@@ -1056,14 +1056,14 @@ class ScenarioTreeManager(PySPConfiguredObject):
                                           invocation_type=invocation_type,
                                           function_args=function_args,
                                           function_kwds=function_kwds,
-                                          async=async,
+                                          async_=async,
                                           oneway=oneway)
 
     def invoke_method(self,
                       method_name,
                       method_args=(),
                       method_kwds=None,
-                      async=False,
+                      async_=False,
                       oneway=False):
         """Invokes a method on a scenario tree constructs managed
            by this scenario tree manager client. This may or may not
@@ -1076,7 +1076,7 @@ class ScenarioTreeManager(PySPConfiguredObject):
                  Arguments passed to the method when it is invoked.
             method_kwds:
                  Keywords to pass to the method when it is invoked.
-            async:
+            async_:
                  When set to True, the return value will be an
                  asynchronous object. Invocation results can be
                  obtained at any point by calling the complete()
@@ -1105,12 +1105,12 @@ class ScenarioTreeManager(PySPConfiguredObject):
         if not self.initialized:
             raise RuntimeError(
                 "The scenario tree manager is not initialized.")
-        if async and oneway:
+        if async_ and oneway:
             raise ValueError("async oneway calls do not make sense")
         return self._invoke_method_impl(method_name,
                                         method_args=method_args,
                                         method_kwds=method_kwds,
-                                        async=async,
+                                        async_=async,
                                         oneway=oneway)
 
     def push_fix_queue_to_instances(self):
@@ -1366,7 +1366,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
         return self._modules_imported
 
     # override initialize on ScenarioTreeManager for documentation purposes
-    def initialize(self, async=False):
+    def initialize(self, async_=False):
         """Initialize the scenario tree manager client.
 
         Note: Calling complete() on an asynchronous result
@@ -1376,7 +1376,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
               complete.
 
         Args:
-            async:
+            async_:
                  When set to True, the return value will be an
                  asynchronous object. Invocation results can be
                  obtained at any point by calling the complete()
@@ -1389,7 +1389,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
             set to True, this return value will be nested inside an
             asynchronous object.
         """
-        return super(ScenarioTreeManagerClient, self).initialize(async=async)
+        return super(ScenarioTreeManagerClient, self).initialize(async_=async_)
 
     def invoke_function_on_worker(self,
                                   worker_name,
@@ -1398,7 +1398,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
                                   invocation_type=InvocationType.Single,
                                   function_args=(),
                                   function_kwds=None,
-                                  async=False,
+                                  async_=False,
                                   oneway=False):
         """Invokes a function on a scenario tree worker
         managed by this scenario tree manager client. The
@@ -1441,7 +1441,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
             function_kwds:
                  Additional keywords to pass to the function
                  when it is invoked.
-            async:
+            async_:
                  When set to True, the return value will be
                  an asynchronous object. Invocation results
                  can be obtained at any point by calling the
@@ -1475,7 +1475,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
         if not self.initialized:
             raise RuntimeError(
                 "The scenario tree manager is not initialized.")
-        if async and oneway:
+        if async_ and oneway:
             raise ValueError("async oneway calls do not make sense")
         invocation_type = _map_deprecated_invocation_type(invocation_type)
         if (invocation_type == InvocationType.PerBundle) or \
@@ -1493,7 +1493,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
                                                     invocation_type=invocation_type,
                                                     function_args=function_args,
                                                     function_kwds=function_kwds,
-                                                    async=async,
+                                                    async_=async,
                                                     oneway=oneway)
 
     def invoke_method_on_worker(self,
@@ -1501,7 +1501,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
                                 method_name,
                                 method_args=(),
                                 method_kwds=None,
-                                async=False,
+                                async_=False,
                                 oneway=False):
         """Invokes a method on a scenario tree worker managed
            by this scenario tree manager client. The worker
@@ -1517,7 +1517,7 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
                  Arguments passed to the method when it is invoked.
             method_kwds:
                  Keywords to pass to the method when it is invoked.
-            async:
+            async_:
                  When set to True, the return value will be an
                  asynchronous object. Invocation results can be
                  obtained at any point by calling the complete()
@@ -1546,13 +1546,13 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
         if not self.initialized:
             raise RuntimeError(
                 "The scenario tree manager is not initialized.")
-        if async and oneway:
+        if async_ and oneway:
             raise ValueError("async oneway calls do not make sense")
         return self._invoke_method_on_worker_impl(worker_name,
                                                   method_name,
                                                   method_args=method_args,
                                                   method_kwds=method_kwds,
-                                                  async=async,
+                                                  async_=async,
                                                   oneway=oneway)
 
     @property
@@ -1595,9 +1595,9 @@ class ScenarioTreeManagerClient(ScenarioTreeManager,
     # subclasses are now expected to generate a (possibly
     # dummy) async object during _init_client
     #
-    def _init(self, async=False):
+    def _init(self, async_=False):
         async_handle = self._init_client()
-        if async:
+        if async_:
             result = async_handle
         else:
             result = async_handle.complete()
@@ -2259,7 +2259,7 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
                                         invocation_type=InvocationType.Single,
                                         function_args=(),
                                         function_kwds=None,
-                                        async=False,
+                                        async_=False,
                                         oneway=False):
 
         assert worker_name == self._worker_name
@@ -2278,7 +2278,7 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
 
         if oneway:
             result = None
-        if async:
+        if async_:
             result = self.AsyncResult(None, result=result)
 
         end_time = time.time()
@@ -2294,7 +2294,7 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
                                       method_name,
                                       method_args=(),
                                       method_kwds=None,
-                                      async=False,
+                                      async_=False,
                                       oneway=False):
 
         assert worker_name == self._worker_name
@@ -2310,7 +2310,7 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
 
         if oneway:
             result = None
-        if async:
+        if async_:
             result = self.AsyncResult(None, result=result)
 
         end_time = time.time()
@@ -2353,7 +2353,7 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
                               invocation_type=InvocationType.Single,
                               function_args=(),
                               function_kwds=None,
-                              async=False,
+                              async_=False,
                               oneway=False):
         assert not (async and oneway)
 
@@ -2364,13 +2364,13 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
             invocation_type=invocation_type,
             function_args=function_args,
             function_kwds=function_kwds,
-            async=False,
+            async_=False,
             oneway=oneway)
 
         if not oneway:
             if invocation_type == InvocationType.Single:
                 result = {self._worker_name: result}
-        if async:
+        if async_:
             result = self.AsyncResult(None, result=result)
 
         return result
@@ -2379,7 +2379,7 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
                             method_name,
                             method_args=(),
                             method_kwds=None,
-                            async=False,
+                            async_=False,
                             oneway=False):
         assert not (async and oneway)
 
@@ -2388,12 +2388,12 @@ class ScenarioTreeManagerClientSerial(_ScenarioTreeManagerWorker,
             method_name,
             method_args=method_args,
             method_kwds=method_kwds,
-            async=False,
+            async_=False,
             oneway=oneway)
 
         if not oneway:
             result = {self._worker_name: result}
-        if async:
+        if async_:
             result = self.AsyncResult(None, result=result)
 
         return result
@@ -2491,7 +2491,7 @@ class _ScenarioTreeManagerClientPyroAdvanced(ScenarioTreeManagerClient,
                                         invocation_type=InvocationType.Single,
                                         function_args=(),
                                         function_kwds=None,
-                                        async=False,
+                                        async_=False,
                                         oneway=False):
         assert not (async and oneway)
         assert self._action_manager is not None
@@ -2534,7 +2534,7 @@ class _ScenarioTreeManagerClientPyroAdvanced(ScenarioTreeManagerClient,
         result = self.AsyncResult(
             self._action_manager, action_handle_data=action_handle)
 
-        if not async:
+        if not async_:
             result = result.complete()
 
         end_time = time.time()
@@ -2550,7 +2550,7 @@ class _ScenarioTreeManagerClientPyroAdvanced(ScenarioTreeManagerClient,
                                       method_name,
                                       method_args=(),
                                       method_kwds=None,
-                                      async=False,
+                                      async_=False,
                                       oneway=False):
 
         assert self._action_manager is not None
@@ -2574,7 +2574,7 @@ class _ScenarioTreeManagerClientPyroAdvanced(ScenarioTreeManagerClient,
         result = self.AsyncResult(
             self._action_manager, action_handle_data=action_handle)
 
-        if not async:
+        if not async_:
             result = result.complete()
 
         end_time = time.time()
@@ -2950,7 +2950,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
                         self.get_worker_for_bundle(bundle.name),
                         "_collect_scenario_tree_data_for_client",
                         method_args=(object_names,),
-                        async=True)
+                        async_=True)
 
                 for node_name in object_names['nodes']:
                     need_node_data[node_name] = False
@@ -2972,7 +2972,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
                         self.get_worker_for_scenario(scenario.name),
                         "_collect_scenario_tree_data_for_client",
                         method_args=(object_names,),
-                        async=True)
+                        async_=True)
 
                 for node_name in object_names['nodes']:
                     need_node_data[node_name] = False
@@ -3386,7 +3386,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
             invocation_type=InvocationType.Single,
             function_args=(),
             function_kwds=None,
-            async=False,
+            async_=False,
             oneway=False):
         assert not (async and oneway)
         assert self._action_manager is not None
@@ -3414,7 +3414,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
                     "a function name is given")
 
         if self._transmission_paused:
-            if (not async) and (not oneway):
+            if (not async_) and (not oneway):
                 raise ValueError(
                     "Unable to perform external function invocations. "
                     "Pyro transmissions are currently paused, but the "
@@ -3612,7 +3612,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
             action_handle_data=action_handle_data,
             map_result=map_result)
 
-        if not async:
+        if not async_:
             result = result.complete()
 
         end_time = time.time()
@@ -3629,7 +3629,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
             method_name,
             method_args=(),
             method_kwds=None,
-            async=False,
+            async_=False,
             oneway=False):
         assert not (async and oneway)
         assert self._action_manager is not None
@@ -3640,7 +3640,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
                   "to scenario tree workers")
 
         if self._transmission_paused:
-            if (not async) and (not oneway):
+            if (not async_) and (not oneway):
                 raise ValueError(
                     "Unable to perform method invocations. "
                     "Pyro transmissions are currently paused, but the "
@@ -3672,7 +3672,7 @@ class ScenarioTreeManagerClientPyro(_ScenarioTreeManagerClientPyroAdvanced,
             self._action_manager,
             action_handle_data=action_handle_data)
 
-        if not async:
+        if not async_:
             result = result.complete()
 
         end_time = time.time()

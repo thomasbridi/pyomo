@@ -712,12 +712,12 @@ class BendersAlgorithm(PySPConfiguredObject):
             function_args=(fix_values,),
             oneway=True)
 
-    def collect_cut_data(self, async=False):
+    def collect_cut_data(self, async_=False):
         return self._manager.invoke_function(
             "EXTERNAL_collect_cut_data",
             thisfile,
             invocation_type=InvocationType.PerScenario,
-            async=async)
+            async_=async_)
 
     def initialize_subproblems(self):
         if self.get_option("verbose"):

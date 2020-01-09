@@ -349,14 +349,14 @@ class ScenarioTreeManagerWorkerPyro(_ScenarioTreeManagerWorker,
                         invocation_type=InvocationType.Single,
                         function_args=(),
                         function_kwds=None,
-                        async=False,
+                        async_=False,
                         oneway=False):
         """This function is an override of that on the
         ScenarioTreeManager interface. It should not be invoked by a
         client, but only locally (e.g., inside a local function
         invocation transmitted by the client).
         """
-        if async and oneway:
+        if async_ and oneway:
             raise ValueError("async oneway calls do not make sense")
         invocation_type = _map_deprecated_invocation_type(invocation_type)
 
@@ -380,7 +380,7 @@ class ScenarioTreeManagerWorkerPyro(_ScenarioTreeManagerWorker,
         if not oneway:
             if invocation_type == InvocationType.Single:
                 result = {self._worker_name: result}
-        if async:
+        if async_:
             result = self.AsyncResult(None, result=result)
 
         return result
@@ -389,7 +389,7 @@ class ScenarioTreeManagerWorkerPyro(_ScenarioTreeManagerWorker,
                       method_name,
                       method_args=(),
                       method_kwds=None,
-                      async=False,
+                      async_=False,
                       oneway=False):
         """This function is an override of that on the
         ScenarioTreeManager interface. It should not be invoked by a
@@ -397,7 +397,7 @@ class ScenarioTreeManagerWorkerPyro(_ScenarioTreeManagerWorker,
         invocation transmitted by the client).
 
         """
-        if async and oneway:
+        if async_ and oneway:
             raise ValueError("async oneway calls do not make sense")
 
         if method_kwds is None:
@@ -406,7 +406,7 @@ class ScenarioTreeManagerWorkerPyro(_ScenarioTreeManagerWorker,
 
         if not oneway:
             result = {self._worker_name: result}
-        if async:
+        if async_:
             result = self.AsyncResult(None, result=result)
 
         return result

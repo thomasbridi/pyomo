@@ -2178,7 +2178,7 @@ class ProgressiveHedging(_PHBase):
         if self._verbose:
             print("PH solver configuration: ")
             print("   Max iterations="+str(self._max_iterations))
-            print("   Async mode=" + str(self._async))
+            print("   Async mode=" + str(self._async_))
             print("   Async buffer length=" + str(self._async_buffer_length))
             print("   Default global rho=" + str(self._rho))
             print("   Over-relaxation enabled="+str(self._overrelax))
